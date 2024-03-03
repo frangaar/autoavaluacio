@@ -10,7 +10,7 @@
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-lg bg-primary">
+    <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
           <a class="navbar-brand" href="{{ url('/') }}">
             <img id="logo" src="{{ url("../resources/media/logo.jfif") }}" width="30" height="30" alt="">
@@ -50,7 +50,7 @@
         </div>
       </nav>
 
-    @yield('contenido')
+    @yield('contingut')
 
 </body>
 </html>

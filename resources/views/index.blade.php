@@ -6,7 +6,7 @@
 
 @section('menuMestres')
     <li><a class="dropdown-item" href="#">Tipus usuaris</a></li>
-    <li><a class="dropdown-item" href="#">Usuaris</a></li>
+    <li><a class="dropdown-item" href="{{ url('usuaris') }}">Usuaris</a></li>
     <li><a class="dropdown-item" href="#">Cicles</a></li>
     <li><a class="dropdown-item" href="#">Mòduls</a></li>
     <li><a class="dropdown-item" href="#">Assignar Professors</a></li>
