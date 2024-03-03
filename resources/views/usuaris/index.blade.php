@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends('index')
 
 @section('contingut')
 
@@ -68,7 +68,11 @@
                     @endif
                 </td>
                 <td>
-                    <form class="float-right" action=" {{ action([App\Http\Controllers\UsuariController::class,'edit'],['usuari' => $usuari->id]) }}" method="GET">
+                    <form class="float-right edit" action=" {{ action([App\Http\Controllers\UsuariController::class,'changePassword'],['usuari' => $usuari->id]) }}" method="GET">
+                        @csrf
+                        <button type="submit" class="btn btn-secondary">Change password</button>
+                    </form>
+                    <form class="float-right edit" action=" {{ action([App\Http\Controllers\UsuariController::class,'edit'],['usuari' => $usuari->id]) }}" method="GET">
                         @csrf
                         <button type="submit" class="btn btn-secondary">Edit</button>
                     </form>

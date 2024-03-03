@@ -46,7 +46,7 @@ class UsuariController extends Controller
         $usuari = new Usuari;
 
         $usuari->nom_usuari = $request->nomusu;
-        $usuari->contrasenya = $request->pass;
+        $usuari->contrasenya = bcrypt($request->pass);
         $usuari->correu = $request->correu;
         $usuari->nom = $request->nom;
         $usuari->cognom = $request->cognom;
@@ -81,11 +81,11 @@ class UsuariController extends Controller
     public function update(Request $request, Usuari $usuari)
     {
 
-        $usuari->nom_usuari = $request->nomusu;
-        $usuari->contrasenya = $request->pass;
-        $usuari->correu = $request->correu;
-        $usuari->nom = $request->nom;
-        $usuari->cognom = $request->cognom;
+        $usuari->nom_usuari = $request->nomusu == null ? $usuari->nom_usuari : $request->nomusu;
+        $usuari->contrasenya = $request->pass == null ? $usuari->contrasenya : $request->pass;
+        $usuari->correu = $request->correu == null ? $usuari->correu : $request->correu;
+        $usuari->nom = $request->nom == null ? $usuari->nom : $request->nom;
+        $usuari->cognom = $request->cognom == null ? $usuari->cognom : $request->cognom;
         $usuari->actiu = $request->actiu == 'actiu' ? true : false;
         $usuari->tipus_usuaris_id = 2;
 
@@ -99,8 +99,20 @@ class UsuariController extends Controller
      */
     public function destroy(Usuari $usuari)
     {
-        $usuari->delete();
+
+        $hasDataRelated = Usuari::find($usuari->id);
+
+        if((sizeof($hasDataRelated->criteris) && sizeof($hasDataRelated->moduls)) == 0){
+            $usuari->delete();
+        };
 
         return redirect()->action([UsuariController::class,'index']);
+    }
+
+    public function changePassword(Usuari $usuari)
+    {
+
+        return view('usuaris.usuari_change_pass', compact('usuari'));
+
     }
 }

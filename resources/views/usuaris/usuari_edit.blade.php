@@ -13,12 +13,12 @@
                         <input type="text" class="form-control" id="nomusu" name="nomusu" value="{{ $usuari->nom_usuari }}">
                     </div>
                 </div>
-                <div class="mb-3 row">
+                {{-- <div class="mb-3 row">
                     <label for="correu" class="col-sm-1 col-form-label">Contrasenya</label>
                     <div class="col-sm-11">
                         <input type="text" class="form-control" id="pass" name="pass" value="{{ $usuari->contrasenya }}">
                     </div>
-                </div>
+                </div> --}}
                 <div class="mb-3 row">
                     <label for="correu" class="col-sm-1 col-form-label">Correu</label>
                     <div class="col-sm-11">
