@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Usuari;
+use App\Clases\Utilitat;
 use Illuminate\Http\Request;
+use Illuminate\Database\QueryException;
 
 class UsuariController extends Controller
 {
@@ -97,14 +99,20 @@ class UsuariController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Usuari $usuari)
+    public function destroy(Request $request, Usuari $usuari)
     {
 
-        $hasDataRelated = Usuari::find($usuari->id);
-
-        if((sizeof($hasDataRelated->criteris) && sizeof($hasDataRelated->moduls)) == 0){
+        try {
+            
             $usuari->delete();
-        };
+            $request->session()->flash('success','Registro borrado correctamente');
+
+        } catch (QueryException $ex) {
+            
+            $mensaje = Utilitat::errorMessage($ex);
+            $request->session()->flash('error',$mensaje);
+            
+        }
 
         return redirect()->action([UsuariController::class,'index']);
     }
@@ -115,4 +123,5 @@ class UsuariController extends Controller
         return view('usuaris.usuari_change_pass', compact('usuari'));
 
     }
+
 }
