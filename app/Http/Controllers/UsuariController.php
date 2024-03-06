@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Usuari;
 use App\Clases\Utilitat;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\QueryException;
+
 
 class UsuariController extends Controller
 {
@@ -122,6 +125,47 @@ class UsuariController extends Controller
 
         return view('usuaris.usuari_change_pass', compact('usuari'));
 
+    }
+
+    public function login(Request $request){
+
+
+        $username = $request->user;
+        $password = $request->pass;
+
+        $user = Usuari::where('email',$username)->first();
+
+        if($user != null && Hash::check($password,$user->pass_usu)){
+            Auth::login($user);
+            $response = redirect('/home');
+
+        }else{
+            $request->session()->flash('error','Usuari o password incorrecte');
+            $response = redirect('/login')->withInput();
+        }
+
+        return $response;
+
+    }
+
+    public function showLogin(){
+
+
+        // $user = new Usuari;
+
+        // $user->id_rol = 2;
+        // $user->email = 'pepe';
+        // $user->pass_usu = bcrypt('pepe');
+
+        // $user->save();
+
+        return view('auth.login');
+    }
+
+    public function logout(){
+
+        Auth::logout();
+        return redirect('/login');
     }
 
 }

@@ -20,4 +20,17 @@ Route::get('/', function () {
 
 Route::get('usuaris/{usuari}/change/password', [UsuariController::class,'changePassword'])->name('usuari.changePassword');
 
+Route::get('/login', [UsuariController::class,'showLogin'])->name('login');
+Route::post('/login', [UsuariController::class,'login']);
+Route::get('/logout', [UsuariController::class,'logout']);
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/home', function(){
+
+        $user = Auth::user();
+
+        return view('home',compact('user'));
+    });
+});
+
 Route::resource('usuaris',UsuariController::class);

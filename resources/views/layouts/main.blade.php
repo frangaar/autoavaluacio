@@ -20,6 +20,7 @@
           </button>
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              @if (Auth::check() && Auth::user()->rol->nombre == 'admin')
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" id="desplegable" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Dades mestres
@@ -28,6 +29,7 @@
                     @yield('menuMestres')
                   </ul>
               </li>
+              @endif
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" id="desplegable" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Professors
@@ -45,12 +47,34 @@
                   </ul>
               </li>
             </ul>
-            <h4>@yield('nom')</h4>
+            
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              @if (Auth::check() && (Auth::user()->rol->nombre == 'admin' || Auth::user()->rol->nombre == 'rider' || Auth::user()->rol->nombre == 'centro'))
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      {{ Auth::user()->email }}
+                  </a>
+                  <ul class="dropdown-menu">
+                    <a class="nav-link" href="{{ url('/logout') }}" aria-expanded="false">
+                      Logout
+                  </a>
+                    </ul>
+                </li>
+              @else
+                <li class="nav-item">
+                  <a class="nav-link" href="{{ url('/login') }}" aria-expanded="false">
+                      Login
+                  </a>
+                </li>
+              @endif
+            </ul>
           </div>
         </div>
       </nav>
 
-    @yield('contingut')
+      <div class="container">
+        @yield('contingut')
+      </div>
 
 </body>
 </html>

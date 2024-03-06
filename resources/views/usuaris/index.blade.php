@@ -16,7 +16,7 @@
 @endif
 <div class="card">
     <div class="card-body">
-        <form action= {{ action([App\Http\Controllers\UsuariController::class,'index']) }}>
+        <form action=" {{ action([App\Http\Controllers\UsuariController::class,'index']) }}">
             <div class="form-row">
                 <div class="row align-items-start">
                     <div class="col">
