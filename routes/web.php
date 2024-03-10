@@ -18,19 +18,26 @@ Route::get('/', function () {
     return view('index');
 });
 
-Route::get('usuaris/{usuari}/change/password', [UsuariController::class,'changePassword'])->name('usuari.changePassword');
+
 
 Route::get('/login', [UsuariController::class,'showLogin'])->name('login');
 Route::post('/login', [UsuariController::class,'login']);
 Route::get('/logout', [UsuariController::class,'logout']);
 
+
+
 Route::middleware(['auth'])->group(function () {
     Route::get('/home', function(){
-
-        $user = Auth::user();
-
-        return view('home',compact('user'));
+        return view('home');
     });
+
+    Route::get('/usuaris', function(){
+        return view('usuaris.index');
+    });
+
+    Route::get('usuaris/{usuari}/change/password', [UsuariController::class,'changePassword'])->name('usuari.changePassword');
+
+    Route::resource('usuaris',UsuariController::class);
 });
 
-Route::resource('usuaris',UsuariController::class);
+

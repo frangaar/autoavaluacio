@@ -87,7 +87,7 @@ class UsuariController extends Controller
     {
 
         $usuari->nom_usuari = $request->nomusu == null ? $usuari->nom_usuari : $request->nomusu;
-        $usuari->contrasenya = $request->pass == null ? $usuari->contrasenya : $request->pass;
+        $usuari->contrasenya = $request->pass == null ? $usuari->contrasenya : bcrypt($request->pass);
         $usuari->correu = $request->correu == null ? $usuari->correu : $request->correu;
         $usuari->nom = $request->nom == null ? $usuari->nom : $request->nom;
         $usuari->cognom = $request->cognom == null ? $usuari->cognom : $request->cognom;
@@ -106,15 +106,15 @@ class UsuariController extends Controller
     {
 
         try {
-            
+
             $usuari->delete();
             $request->session()->flash('success','Registro borrado correctamente');
 
         } catch (QueryException $ex) {
-            
+
             $mensaje = Utilitat::errorMessage($ex);
             $request->session()->flash('error',$mensaje);
-            
+
         }
 
         return redirect()->action([UsuariController::class,'index']);
@@ -129,17 +129,18 @@ class UsuariController extends Controller
 
     public function login(Request $request){
 
-
         $username = $request->user;
         $password = $request->pass;
 
-        $user = Usuari::where('email',$username)->first();
+        $user = Usuari::where('nom_usuari',$username)->first();
 
-        if($user != null && Hash::check($password,$user->pass_usu)){
+        if($user != null && Hash::check($password,$user->contrasenya)){
             Auth::login($user);
+            // Auth::attempt(['nom_usuari' => $username, 'contrasenya' => $password]);
             $response = redirect('/home');
 
         }else{
+
             $request->session()->flash('error','Usuari o password incorrecte');
             $response = redirect('/login')->withInput();
         }
@@ -149,15 +150,6 @@ class UsuariController extends Controller
     }
 
     public function showLogin(){
-
-
-        // $user = new Usuari;
-
-        // $user->id_rol = 2;
-        // $user->email = 'pepe';
-        // $user->pass_usu = bcrypt('pepe');
-
-        // $user->save();
 
         return view('auth.login');
     }
