@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\ResultatAprenentatge;
-use Illuminate\Database\QueryException;
 use App\Http\Resources\ResultatAprenentatgeResource;
 
 class ResultatAprenentatgeController extends Controller
@@ -15,9 +14,9 @@ class ResultatAprenentatgeController extends Controller
      */
     public function index()
     {
-        $resultats = ResultatAprenentatge::all();
+        $resultat = ResultatAprenentatge::all();
 
-        return ResultatAprenentatgeResource::collection($resultats);
+        return ResultatAprenentatgeResource::collection($resultat);
     }
 
     /**
@@ -51,15 +50,16 @@ class ResultatAprenentatgeController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(ResultatAprenentatge $resultat)
     {
-        //
+
+        return new ResultatAprenentatgeResource($resultat);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, ResultatAprenentatge $resultatAprenentatge)
     {
         //
     }
@@ -67,7 +67,7 @@ class ResultatAprenentatgeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(ResultatAprenentatge $resultatAprenentatge)
     {
         //
     }

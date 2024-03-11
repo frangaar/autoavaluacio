@@ -41,4 +41,4 @@ Route::middleware(['auth'])->group(function () {
     
 });
 
-Route::apiResource('api/resultat', ResultatAprenentatgeController::class);
+
