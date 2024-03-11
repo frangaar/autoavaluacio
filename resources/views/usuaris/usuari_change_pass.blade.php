@@ -11,6 +11,7 @@
                     <label for="correu" class="col-sm-1 col-form-label">Contrasenya</label>
                     <div class="col-sm-11">
                         <input type="text" class="form-control" id="pass" name="pass" value="{{ $usuari->contrasenya }}">
+                        <input type="hidden" class="form-control" name="isPasswordChange" value="true">
                     </div>
                 </div>
                 <div class="mb-3 row align-items-end">
