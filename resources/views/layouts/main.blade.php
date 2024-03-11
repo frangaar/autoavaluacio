@@ -28,7 +28,7 @@
                                 Dades mestres
                             </a>
                             <ul class="dropdown-menu">
-                                @yield('menuMestres')
+                                @yield('menuMestres') 
                             </ul>
                         </li>
                     @endif
