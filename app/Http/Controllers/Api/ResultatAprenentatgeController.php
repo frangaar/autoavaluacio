@@ -103,10 +103,10 @@ class ResultatAprenentatgeController extends Controller
         return $response;
     }
 
-    public function mostrarResultadosAprendizaje()
+    public function mostrarResultadosAprendizaje($idModul)
     {
 
-        $rubricas = ResultatAprenentatge::with('criteris.rubriques.criteri')->groupBy('id')->get();
+        $rubricas = ResultatAprenentatge::with('criteris.rubriques.criteri')->where('moduls_id','=',$idModul)->groupBy('id')->get();
 
         return ResultatAprenentatgeResource::collection($rubricas);
     }

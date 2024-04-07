@@ -6,6 +6,7 @@
                     <div class="card-body">
                         <h5 class="card-title">{{ modul.codi }} - {{ modul.sigles }}</h5>
                         <p class="card-text">{{ modul.nom }}</p>
+                        <input type="hidden" class="modulId" v-bind:value="modul.id"></input>
                         <button type="button" class="btn btn-success" @click="showForm()">Modificar rúbrica</button>
                     </div>
                 </div>
@@ -26,7 +27,7 @@
                             <h3 class="form-label">{{ resultat.descripcio }}</h3>
                             <template v-for="(criteri,index2) in resultat.criteris">
                                 <label class="mt-3">{{ criteri.descripcio }}</label>
-                                <select class="form-select" name="prueba">
+                                <select class="form-select" name="selects">
                                     <template v-for="rubrica in criteri.rubriques">
                                         <option v-bind:value="rubrica.nivell">{{ rubrica.descripcio }}</option>
                                     </template>
@@ -37,6 +38,23 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-success" data-bs-dismiss="modal" aria-label="Save" @click="saveRubrica()">Guardar</button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" tabindex="-1" id="rubricaVacia">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h2>No hay datos de rúbrica</h2>
+                </div>
+                <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close">Cancelar</button>
                 </div>
             </div>
@@ -59,6 +77,7 @@ export default {
             moduls: [],
             resultats: [],
             myModal: {},
+            myModalVacio:{},
             rubricas: {},
             datos: {},
             selectedValues: [],
@@ -75,7 +94,7 @@ export default {
             const riderId = document.querySelector('meta[name="userId"]').content
             let notas = new Array();
 
-            let selectedValues = document.getElementsByName('prueba');
+            let selectedValues = document.getElementsByName('selects');
 
             selectedValues.forEach(selected => {
                 (selected.value != '') ? notas.push(parseInt(selected.value)) : notas.push(0);
@@ -96,6 +115,7 @@ export default {
         showForm(){
 
             const me = this;
+            const modulsId = event.target.parentNode.querySelector('.modulId').value;
             const riderId = document.querySelector('meta[name="userId"]').content
             let notas = new Array();
 
@@ -118,19 +138,23 @@ export default {
             })
 
             axios
-            .get(`rubricas`)
+            .get(`rubricas/${modulsId}`)
             .then(response => {
 
                 loader.classList.add('hide')
                 me.resultats = response.data;
 
-                me.myModal = new bootstrap.Modal('#rubricaModal');
-                me.myModal.show();
+                if(me.resultats.length > 0){
+                    me.myModal = new bootstrap.Modal('#rubricaModal');
+                    me.myModal.show();
 
-                setTimeout(() => {
-                    me.fillForm();
-                }, 100);
-
+                    setTimeout(() => {
+                        me.fillForm();
+                    }, 100);
+                }else{
+                    me.myModalVacio = new bootstrap.Modal('#rubricaVacia');
+                    me.myModalVacio.show();
+                }
             })
             .catch(error => {
 
@@ -215,6 +239,10 @@ export default {
 
 label{
     font-weight: 700;
+}
+
+#rubricaVacia{
+    text-align: center
 }
 
 </style>
