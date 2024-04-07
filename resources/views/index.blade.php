@@ -21,11 +21,14 @@
     <li><a class="dropdown-item" href="#">Resultats aprenentatge</a></li>
     <li><a class="dropdown-item" href="#">Criteris avaluacio</a></li>
     <li><hr class="dropdown-divider"></li>
-    <li><a class="dropdown-item" href="#">Autoavaluació alumnes</a></li>
+    <li><a class="dropdown-item" href="">Autoavaluació alumnes</a></li>
 @endsection
 
 @section('menuAlumnes')
-    <li><a class="dropdown-item" href="#">Autoavaluació</a></li>
+    @if (Auth::check())
+        @php $userId = Auth::user()->id  @endphp
+    @endif
+    <li><a class="dropdown-item" href="autoavaluacio">Autoavaluació</a></li>
 @endsection
 
 @section('nom')

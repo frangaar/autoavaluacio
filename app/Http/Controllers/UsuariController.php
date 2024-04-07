@@ -160,4 +160,8 @@ class UsuariController extends Controller
         return redirect('/login');
     }
 
+    public function autoavaluacio(){
+
+        return view('usuaris.autoavaluacio');
+    }
 }

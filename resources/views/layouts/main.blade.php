@@ -9,7 +9,9 @@
     <title>@yield('titulo')</title>
 </head>
 <body>
-
+    @if (Auth::check())
+        <meta name="userId" content="{{ Auth::user()->id }}">
+    @endif
     <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
           <a class="navbar-brand" href="{{ url('/') }}">
@@ -80,7 +82,7 @@
       </nav>
 
       <div class="container">
-        @yield('contingut')
+            @yield('contingut')
       </div>
 
 </body>
