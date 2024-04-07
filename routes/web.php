@@ -27,22 +27,25 @@ Route::get('/logout', [UsuariController::class,'logout']);
 
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/home', function(){
-        return view('home');
-    });
 
-    Route::get('/usuaris', function(){
-        return view('usuaris.index');
-    });
+Route::get('/home', function(){
+    return view('home');
+});
 
-    Route::resource('usuaris',UsuariController::class);
+// Route::get('/usuaris', function(){
+//     return view('usuaris.index');
+// });
 
-    Route::get('usuaris/{usuari}/change/password', [UsuariController::class,'changePassword'])->name('usuari.changePassword');
+Route::resource('usuaris',UsuariController::class)->middleware(['checkRole:Administrador']);
 
-    Route::get('autoavaluacio',[UsuariController::class,'autoavaluacio']);
-    Route::get('autoaval-professor',[UsuariController::class,'autoavaluacioProfessor']);
 
-    Route::resource('usuaris',UsuariController::class);
+
+Route::get('usuaris/{usuari}/change/password', [UsuariController::class,'changePassword'])->name('usuari.changePassword');
+
+Route::get('autoavaluacio',[UsuariController::class,'autoavaluacio'])->middleware(['checkRole:Alumne']);
+Route::get('autoaval-professor',[UsuariController::class,'autoavaluacioProfessor'])->middleware(['checkRole:Professor']);
+
+    // Route::resource('usuaris',UsuariController::class);
 });
 
 

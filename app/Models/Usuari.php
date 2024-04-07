@@ -32,4 +32,5 @@ class Usuari extends Authenticatable
     {
         return $this->belongsToMany(CriteriAvaluacio::class, 'alumnes_has_criteris_avaluacio', 'usuaris_id', 'criteris_avaluacio_id')->withPivot('nota');
     }
+
 }
