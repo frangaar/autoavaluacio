@@ -33,17 +33,18 @@ class ResultatAprenentatgeController extends Controller
         $resultat->actiu = $request->actiu;
         $resultat->moduls_id = $request->moduls_id;
 
-        try{
+        try {
             $resultat->save();
             $response = (new ResultatAprenentatgeResource($resultat))
-                ->response()
-                ->setStatusCode(200);
-        }
-        catch(QueryException){
+                        ->response()
+                        ->setStatusCode(201);
+        } catch (QueryException $ex) {
 
+            $mensaje = "Error en la respuesta";
             $response = \response()
-                ->json(['error' => "Error al guardar", 400]);
+                        ->json(["error" => $mensaje],400);
         }
+
 
         return $response;
     }
@@ -54,6 +55,7 @@ class ResultatAprenentatgeController extends Controller
     public function show(ResultatAprenentatge $resultat)
     {
         $resultat = ResultatAprenentatge::find($resultat->id);
+
         return new ResultatAprenentatgeResource($resultat);
     }
 

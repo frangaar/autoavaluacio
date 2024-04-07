@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\ResultatAprenentatgeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UsuariController;
 
@@ -19,7 +20,6 @@ Route::get('/', function () {
 });
 
 
-
 Route::get('/login', [UsuariController::class,'showLogin'])->name('login');
 Route::post('/login', [UsuariController::class,'login']);
 Route::get('/logout', [UsuariController::class,'logout']);
@@ -34,6 +34,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/usuaris', function(){
         return view('usuaris.index');
     });
+
+    Route::resource('usuaris',UsuariController::class);
 
     Route::get('usuaris/{usuari}/change/password', [UsuariController::class,'changePassword'])->name('usuari.changePassword');
 

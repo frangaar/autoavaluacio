@@ -48,7 +48,7 @@ class UsuariController extends Controller
      */
     public function store(Request $request)
     {
-        $usuari = new Usuari;
+        $usuari = new Usuari();
 
         $usuari->nom_usuari = $request->nomusu;
         $usuari->contrasenya = bcrypt($request->pass);
@@ -91,7 +91,17 @@ class UsuariController extends Controller
         $usuari->correu = $request->correu == null ? $usuari->correu : $request->correu;
         $usuari->nom = $request->nom == null ? $usuari->nom : $request->nom;
         $usuari->cognom = $request->cognom == null ? $usuari->cognom : $request->cognom;
-        $usuari->actiu = $request->actiu == 'actiu' ? true : false;
+
+
+        if(!isset($request->isPasswordChange)){
+        
+            if(isset($request->actiu)){
+                $usuari->actiu = true;
+            }else{
+                $usuari->actiu = false;
+            }
+        }
+        
         $usuari->tipus_usuaris_id = 2;
 
         $usuari->save();
