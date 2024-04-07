@@ -110,7 +110,7 @@ class CriteriAvaluacioController extends Controller
             foreach ($request->notas as $key => $value) {
                 $notasList[$key+1] = ['nota' => $value];
             }
-            // $notasList =$request->notas;
+
             $usuari->criteris()->sync($notasList,false);
 
             $response = \response()

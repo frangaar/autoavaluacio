@@ -26,7 +26,7 @@
                             <h3 class="form-label">{{ resultat.descripcio }}</h3>
                             <template v-for="(criteri,index2) in resultat.criteris">
                                 <label class="mt-3">{{ criteri.descripcio }}</label>
-                                <select class="form-select" v-model="selectedValues[index + '-' + index2]">
+                                <select class="form-select" name="prueba">
                                     <template v-for="rubrica in criteri.rubriques">
                                         <option v-bind:value="rubrica.nivell">{{ rubrica.descripcio }}</option>
                                     </template>
@@ -36,7 +36,7 @@
                     </template>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-success" aria-label="Save" @click="saveRubrica()">Guardar</button>
+                    <button type="button" class="btn btn-success" data-bs-dismiss="modal" aria-label="Save" @click="saveRubrica()">Guardar</button>
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close">Cancelar</button>
                 </div>
             </div>
@@ -61,7 +61,8 @@ export default {
             myModal: {},
             rubricas: {},
             datos: {},
-            selectedValues: []
+            selectedValues: [],
+            notas: {}
         }
     },
     created(){
@@ -73,29 +74,18 @@ export default {
             const me = this;
             const riderId = document.querySelector('meta[name="userId"]').content
             let notas = new Array();
-            let cont1 = 0;
-            let cont2 = 0;
 
-            for (let resultat of this.resultats) {
+            let selectedValues = document.getElementsByName('prueba');
 
-                for (let criteri of resultat.criteris) {
-                    const key = `${cont1}-${cont2}`;
-                    if (!this.selectedValues[key]) {
-                        this.selectedValues[key] = 0
-                    }
-                    cont2++;
-                    notas.push(this.selectedValues[key]);
-                }
-                cont1++;
-            }
+            selectedValues.forEach(selected => {
+                (selected.value != '') ? notas.push(parseInt(selected.value)) : notas.push(0);
+            });
 
-            // this.rubricas.usuari_id = riderId;
             this.rubricas.notas = notas;
 
             axios
             .put(`modificar-criteris/${riderId}`, me.rubricas)
             .then(response => {
-
 
             })
             .catch(error => {
@@ -106,9 +96,26 @@ export default {
         showForm(){
 
             const me = this;
+            const riderId = document.querySelector('meta[name="userId"]').content
+            let notas = new Array();
 
             let loader = document.getElementById('loader');
             loader.classList.remove('hide')
+
+            axios
+            .get(`rubricas-usuari/${riderId}`)
+            .then(responseNotas => {
+
+                responseNotas.data.forEach(item => {
+                    notas.push(item.pivot.nota);
+                });
+
+                me.notas = notas;
+
+            })
+            .catch(error => {
+
+            })
 
             axios
             .get(`rubricas`)
@@ -119,10 +126,34 @@ export default {
 
                 me.myModal = new bootstrap.Modal('#rubricaModal');
                 me.myModal.show();
+
+                setTimeout(() => {
+                    me.fillForm();
+                }, 100);
+
             })
             .catch(error => {
 
             })
+        },
+        fillForm(){
+
+            let selectedValues = document.getElementsByName('prueba');
+            let index = 0;
+
+            selectedValues.forEach(selected => {
+                selected.value = this.notas[index]
+                var options = selected.querySelectorAll('option');
+                options.forEach(function(option) {
+                    if (option.value === selected.value) {
+                        option.selected = true;
+                    } else {
+                        option.selected = false;
+                    }
+                });
+                index++;
+            });
+
         },
         listarModulos(){
 

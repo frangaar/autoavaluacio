@@ -30,6 +30,7 @@ Route::apiResource('moduls/usuari',UsuariController::class);
 Route::get('lista-moduls/{userId}',[UsuariController::class,'modulByUser']);
 
 Route::get('rubricas',[ResultatAprenentatgeController::class,'mostrarResultadosAprendizaje']);
+Route::get('rubricas-usuari/{userId}',[UsuariController::class,'mostrarResultadosAprendizajePorUser']);
 
 Route::put('modificar-criteris/{userId}',[CriteriAvaluacioController::class,'saveCriteris']);
 

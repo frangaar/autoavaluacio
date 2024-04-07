@@ -83,4 +83,12 @@ class UsuariController extends Controller
 
         return UsuariResource::collection($moduls->moduls);
     }
+
+    public function mostrarResultadosAprendizajePorUser($userId)
+    {
+
+        $rubricas = Usuari::with('criteris')->find($userId);
+
+        return UsuariResource::collection($rubricas->criteris);
+    }
 }
