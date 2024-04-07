@@ -28,6 +28,7 @@ Route::apiResource('resultats',ResultatAprenentatgeController::class);
 Route::apiResource('moduls/usuari',UsuariController::class);
 
 Route::get('lista-moduls/{userId}',[UsuariController::class,'modulByUser']);
+Route::get('lista-moduls',[UsuariController::class,'modulsAll']);
 
 Route::get('rubricas/{idModul}',[ResultatAprenentatgeController::class,'mostrarResultadosAprendizaje']);
 Route::get('rubricas-usuari/{userId}',[UsuariController::class,'mostrarResultadosAprendizajePorUser']);

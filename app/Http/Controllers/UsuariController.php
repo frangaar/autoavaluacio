@@ -94,14 +94,14 @@ class UsuariController extends Controller
 
 
         if(!isset($request->isPasswordChange)){
-        
+
             if(isset($request->actiu)){
                 $usuari->actiu = true;
             }else{
                 $usuari->actiu = false;
             }
         }
-        
+
         $usuari->tipus_usuaris_id = 2;
 
         $usuari->save();
@@ -173,5 +173,10 @@ class UsuariController extends Controller
     public function autoavaluacio(){
 
         return view('usuaris.autoavaluacio');
+    }
+
+    public function autoavaluacioProfessor(){
+
+        return view('profesor.autoavaluacio');
     }
 }

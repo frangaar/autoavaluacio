@@ -1,16 +1,19 @@
 <template>
     <div class="row row-cols-1 row-cols-md-3 g-4">
-        <template v-for="modul in moduls">
-            <div v-if="modul.actiu == 1" class="col">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ modul.codi }} - {{ modul.sigles }}</h5>
-                        <p class="card-text">{{ modul.nom }}</p>
-                        <input type="hidden" class="modulId" v-bind:value="modul.id"></input>
-                        <button type="button" class="btn btn-success" @click="showForm()">Modificar rúbrica</button>
+        <template v-for="usuari in usuaris">
+            <template v-for="modul in usuari.moduls">
+                <div v-if="modul.actiu == 1" class="col">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ usuari.nom }} - UserId: {{ usuari.id }}</h5>
+                            <p class="card-text">{{ modul.codi }} - {{ modul.sigles }}</p>
+                            <input type="hidden" class="modulId" v-bind:value="modul.id"></input>
+                            <input type="hidden" class="userId" v-bind:value="usuari.id"></input>
+                            <button type="button" class="btn btn-success" @click="showForm()">Ver rúbrica</button>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </template>
         </template>
     </div>
 
@@ -37,7 +40,6 @@
                     </template>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-success" data-bs-dismiss="modal" aria-label="Save" @click="saveRubrica()">Guardar</button>
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close">Cancelar</button>
                 </div>
             </div>
@@ -58,7 +60,7 @@
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close">Cancelar</button>
                 </div>
             </div>
-        </div>º
+        </div>
     </div>
 
     <div id="loader" class="load container-fluid hide">
@@ -74,13 +76,12 @@ export default {
 
     data(){
         return {
-            moduls: [],
+            usuaris: [],
             resultats: [],
             myModal: {},
             myModalVacio:{},
             rubricas: {},
             datos: {},
-            selectedValues: [],
             notas: {}
         }
     },
@@ -88,35 +89,11 @@ export default {
         this.listarModulos();
     },
     methods:{
-        saveRubrica(){
-
-            const me = this;
-            const userId = document.querySelector('meta[name="userId"]').content
-            let notas = new Array();
-
-            let selectedValues = document.getElementsByName('selects');
-
-            selectedValues.forEach(selected => {
-                (selected.value != '') ? notas.push(parseInt(selected.value)) : notas.push(0);
-            });
-
-            this.rubricas.notas = notas;
-
-            axios
-            .put(`modificar-criteris/${userId}`, me.rubricas)
-            .then(response => {
-
-            })
-            .catch(error => {
-
-            })
-
-        },
         showForm(){
 
             const me = this;
             const modulsId = event.target.parentNode.querySelector('.modulId').value;
-            const userId = document.querySelector('meta[name="userId"]').content
+            const userId = event.target.parentNode.querySelector('.userId').value;
             let notas = new Array();
 
             let loader = document.getElementById('loader');
@@ -176,18 +153,19 @@ export default {
                     }
                 });
                 index++;
+                selected.disabled = true
             });
 
         },
         listarModulos(){
 
             const me = this;
-            const userId = document.querySelector('meta[name="userId"]').content
+
 
             axios
-            .get(`lista-moduls/${userId}`)
+            .get(`lista-moduls`)
             .then(response => {
-                me.moduls = response.data;
+                me.usuaris = response.data;
             })
             .catch(error => {
 

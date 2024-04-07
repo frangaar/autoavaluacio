@@ -10,7 +10,7 @@
 </head>
 <body>
     @if (Auth::check())
-        <meta name="userId" content="{{ Auth::user()->id }}">
+        <meta name="userId" content="{{ Auth::user()->id }} {{Auth::user()->rol->tipus}}">
     @endif
     <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
@@ -30,7 +30,7 @@
                                 Dades mestres
                             </a>
                             <ul class="dropdown-menu">
-                                @yield('menuMestres') 
+                                @yield('menuMestres')
                             </ul>
                         </li>
                     @endif

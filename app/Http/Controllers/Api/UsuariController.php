@@ -91,4 +91,11 @@ class UsuariController extends Controller
 
         return UsuariResource::collection($rubricas->criteris);
     }
+
+    public function modulsAll(){
+
+        $moduls = Usuari::with('moduls')->where('tipus_usuaris_id','=',3)->groupBy('id')->get();
+
+        return UsuariResource::collection($moduls);
+    }
 }

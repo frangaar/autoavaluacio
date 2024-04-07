@@ -40,6 +40,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('usuaris/{usuari}/change/password', [UsuariController::class,'changePassword'])->name('usuari.changePassword');
 
     Route::get('autoavaluacio',[UsuariController::class,'autoavaluacio']);
+    Route::get('autoaval-professor',[UsuariController::class,'autoavaluacioProfessor']);
 
     Route::resource('usuaris',UsuariController::class);
 });

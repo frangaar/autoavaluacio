@@ -21,7 +21,7 @@
     <li><a class="dropdown-item" href="#">Resultats aprenentatge</a></li>
     <li><a class="dropdown-item" href="#">Criteris avaluacio</a></li>
     <li><hr class="dropdown-divider"></li>
-    <li><a class="dropdown-item" href="">Autoavaluació alumnes</a></li>
+    <li><a class="dropdown-item" href="autoaval-professor">Autoavaluació alumnes</a></li>
 @endsection
 
 @section('menuAlumnes')
